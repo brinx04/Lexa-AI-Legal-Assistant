@@ -1,0 +1,56 @@
+services:
+  # 1. Relational Database: Stores Lexa's document metadata, user auth sessions, and chat history
+  postgres:
+    image: postgres:15-alpine
+    container_name: lexa-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-lexa_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-lexa_db}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - lexa_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lexa_admin} -d ${POSTGRES_DB:-lexa_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Message Broker: Holds the async tasks (OCR, chunking, agent pipeline execution) for Celery workers
+  redis:
+    image: redis:7-alpine
+    container_name: lexa-redis
+    restart: always
+    ports:
+      - "127.0.0.1:6380:6379"
+    volumes:
+      - lexa_redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping | grep -q PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 3. Vector Database: Stores the semantic embeddings of legal clauses for Lexa's RAG pipeline
+  qdrant:
+    image: qdrant/qdrant:v1.13.6
+    container_name: lexa-qdrant
+    restart: always
+    ports:
+      - "127.0.0.1:6335:6333" # REST API
+      - "127.0.0.1:6336:6334" # gRPC
+    volumes:
+      - lexa_qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/6333' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  lexa_postgres_data:
+  lexa_redis_data:
+  lexa_qdrant_data:

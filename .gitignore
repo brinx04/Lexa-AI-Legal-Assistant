@@ -1,0 +1,68 @@
+# ──────────────────────────────────────────────
+# Python / Backend
+# ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.*
+
+# Uploads (user files, not source code)
+backend/uploads/
+
+# ──────────────────────────────────────────────
+# Node / Frontend (Next.js)
+# ──────────────────────────────────────────────
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+
+# Next.js auto-generated
+*.tsbuildinfo
+next-env.d.ts
+
+# Environment variables
+frontend/.env*
+
+# ──────────────────────────────────────────────
+# Editor / OS
+# ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ──────────────────────────────────────────────
+# Logs & Debug
+# ──────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ──────────────────────────────────────────────
+# Misc
+# ──────────────────────────────────────────────
+*.pem
+.vercel
+coverage/

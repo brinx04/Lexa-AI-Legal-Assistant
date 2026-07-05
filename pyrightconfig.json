@@ -1,0 +1,13 @@
+{
+    "venvPath": "e:\\Projects\\Lexa\\backend",
+    "venv": "venv",
+    "pythonVersion": "3.13",
+    "pythonPlatform": "Windows",
+    "include": [
+        "backend"
+    ],
+    "extraPaths": [
+        "e:\\Projects\\Lexa\\backend\\venv\\Lib\\site-packages",
+        "e:\\Projects\\Lexa\\backend"
+    ]
+}
